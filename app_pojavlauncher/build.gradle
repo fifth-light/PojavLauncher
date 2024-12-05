@@ -217,5 +217,7 @@ dependencies {
 
     // implementation 'net.sourceforge.streamsupport:streamsupport-cfuture:1.7.0'
 
+    implementation 'top.fifthlight.touchcontroller:proxy-client:0.0.1'
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
