@@ -20,7 +20,7 @@ import net.kdt.pojavlaunch.GrabListener;
 import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.customcontrols.ControlData;
 import net.kdt.pojavlaunch.customcontrols.ControlLayout;
-import net.kdt.pojavlaunch.customcontrols.handleview.EditControlPopup;
+import net.kdt.pojavlaunch.customcontrols.handleview.EditControlSideDialog;
 
 import org.lwjgl.glfw.CallbackBridge;
 
@@ -61,7 +61,7 @@ public interface ControlInterface extends View.OnLongClickListener, GrabListener
     /**
      * Load the values and hide non useful forms
      */
-    void loadEditValues(EditControlPopup editControlPopup);
+    void loadEditValues(EditControlSideDialog editControlDialog);
 
     @Override
     default void onGrabState(boolean isGrabbing) {

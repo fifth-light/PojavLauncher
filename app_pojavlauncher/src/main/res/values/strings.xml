@@ -274,6 +274,7 @@
     <string name="preference_shader_dump_title">Enable shader dumping</string>
     <string name="preference_shader_dump_description">Log converted shaders into the log file.</string>
     <string name="percent_format">%d%%</string>
+    <string name="millisecond_format">%d ms</string>
     <string name="customctrl_editor_exit_title">Leaving?</string>
     <string name="customctrl_editor_exit_msg">Are you sure you want to exit?</string>
     <string name="customctrl_editor_exit">Leave editor</string>
@@ -415,7 +416,9 @@
     <string name="preference_remap_controller_title">Change controller key bindings</string>
     <string name="preference_remap_controller_description">Allows you to modify the keyboard keys bound to each controller button</string>
     <string name="mcl_button_discord">Discord</string>
-    <string name="discord_invite" translatable="false">https://discord.gg/pojavlauncher-724163890803638273</string>
+    <string name="mcl_button_open_directory">Open game directory</string>
+    <string name="discord_invite" translatable="false">https://discord.com/invite/aenk3EUvER</string>
     <string name="local_login_bad_username_title">Unsuitable username</string>
     <string name="local_login_bad_username_text">The username must be between 3–16 characters long, and must only contain latin letters, arabic numerals and underscores.</string>
+    <string name="quick_setting_title">Quick settings</string>
 </resources>
