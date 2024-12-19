@@ -323,6 +323,7 @@
 
     <string name="generic_install">Install</string>
     <string name="generic_apply">Apply</string>
+    <string name="generic_debug">Debug</string>
 
     <string name="search_modpack_no_result">No modpacks found</string>
     <string name="search_modpack_error">Failed to find modpacks</string>

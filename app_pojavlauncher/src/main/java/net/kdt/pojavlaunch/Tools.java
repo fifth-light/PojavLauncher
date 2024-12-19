@@ -33,9 +33,6 @@ import android.util.ArrayMap;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowInsets;
-import android.view.WindowInsetsController;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -47,6 +44,10 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
@@ -539,35 +540,32 @@ public final class Tools {
 
     @RequiresApi(Build.VERSION_CODES.R)
     private static void setFullscreenSdk30(Activity activity, boolean fullscreen) {
-        final Window window = activity.getWindow();
-        final View decorView = window.getDecorView();
-        final int insetControllerFlags = WindowInsets.Type.statusBars() | WindowInsets.Type.navigationBars();
-        final View.OnApplyWindowInsetsListener windowInsetsListener = (view, windowInsets) ->{
-            WindowInsetsController windowInsetsController = decorView.getWindowInsetsController();
-            if(windowInsetsController == null) return windowInsets;
-            boolean multiWindowMode = activity.isInMultiWindowMode();
-            // Emulate the behaviour of the legacy function using the new flags
-            if(fullscreen && !multiWindowMode) {
-                windowInsetsController.hide(insetControllerFlags);
-                windowInsetsController.setSystemBarsBehavior(WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
-                window.setDecorFitsSystemWindows(false);
-            }else {
-                windowInsetsController.show(insetControllerFlags);
-                // Both of the constants below have the exact same numerical value, but
-                // for some reason the one that works below Android S was removed
-                // from the acceptable constants for setSystemBarsBehaviour
-                if (SDK_INT >= Build.VERSION_CODES.S) {
-                    windowInsetsController.setSystemBarsBehavior(WindowInsetsController.BEHAVIOR_DEFAULT);
-                }else {
-                    // noinspection WrongConstant
-                    windowInsetsController.setSystemBarsBehavior(WindowInsetsController.BEHAVIOR_SHOW_BARS_BY_SWIPE);
-                }
-                window.setDecorFitsSystemWindows(true);
-            }
-            return windowInsets;
-        };
-        decorView.setOnApplyWindowInsetsListener(windowInsetsListener);
-        windowInsetsListener.onApplyWindowInsets(decorView, null);
+        WindowInsetsControllerCompat windowInsetsController =
+                WindowCompat.getInsetsController(activity.getWindow(), activity.getWindow().getDecorView());
+        if (windowInsetsController == null) {
+            Log.w(APP_NAME, "WindowInsetsController is null, cannot set fullscreen");
+            return;
+        }
+
+        // Configure the behavior of the hidden system bars.
+        windowInsetsController.setSystemBarsBehavior(
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        );
+
+        ViewCompat.setOnApplyWindowInsetsListener(
+                activity.getWindow().getDecorView(),
+                (view, windowInsets) -> {
+                    if (fullscreen && !activity.isInMultiWindowMode()) {
+                        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars());
+                        activity.getWindow().setDecorFitsSystemWindows(false);
+                    } else {
+                        windowInsetsController.show(WindowInsetsCompat.Type.systemBars());
+                        activity.getWindow().setDecorFitsSystemWindows(true);
+                    }
+
+                    return ViewCompat.onApplyWindowInsets(view, windowInsets);
+                });
+
     }
 
     public static void setFullscreen(Activity activity, boolean fullscreen) {
