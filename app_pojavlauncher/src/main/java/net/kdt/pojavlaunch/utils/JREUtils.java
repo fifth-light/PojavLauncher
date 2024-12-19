@@ -22,8 +22,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.oracle.dalvik.*;
 import java.io.*;
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
-
 import net.kdt.pojavlaunch.*;
 import net.kdt.pojavlaunch.extra.ExtraConstants;
 import net.kdt.pojavlaunch.extra.ExtraCore;
@@ -38,9 +36,6 @@ import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.egl.EGLContext;
 import javax.microedition.khronos.egl.EGLDisplay;
-
-import top.fifthlight.touchcontroller.proxy.client.LauncherSocketProxyClient;
-import top.fifthlight.touchcontroller.proxy.client.LauncherSocketProxyClientKt;
 
 public class JREUtils {
     private JREUtils() {}
@@ -278,25 +273,7 @@ public class JREUtils {
         // return ldLibraryPath;
     }
 
-    public static LauncherSocketProxyClient touchControllerProxy;
-    public static int touchControllerProxyPort = -1;
-
     public static void launchJavaVM(final AppCompatActivity activity, final Runtime runtime, File gameDirectory, final List<String> JVMArgs, final String userArgsString) throws Throwable {
-        if (touchControllerProxy == null) {
-            touchControllerProxyPort = ThreadLocalRandom.current().nextInt(32768) + 32768;
-            touchControllerProxy = LauncherSocketProxyClientKt.localhostLauncherSocketProxyClient(touchControllerProxyPort);
-            Log.d("LauncherSocketProxy", "Created on port " + touchControllerProxyPort);
-            new Thread(() -> {
-                Log.d("LauncherSocketProxy", "Listening on port " + touchControllerProxyPort);
-                LauncherSocketProxyClientKt.runProxy(touchControllerProxy);
-                Log.d("LauncherSocketProxy", "Stopped");
-            }).start();
-        }
-
-        if (touchControllerProxyPort > 0) {
-            Os.setenv("TOUCH_CONTROLLER_PROXY", String.valueOf(touchControllerProxyPort), true);
-        }
-
         String runtimeHome = MultiRTUtils.getRuntimeHome(runtime.name).getAbsolutePath();
 
         JREUtils.relocateLibPath(runtime, runtimeHome);
