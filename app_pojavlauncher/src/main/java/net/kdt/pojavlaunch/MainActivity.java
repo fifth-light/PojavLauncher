@@ -62,6 +62,7 @@ import net.kdt.pojavlaunch.prefs.QuickSettingSideDialog;
 import net.kdt.pojavlaunch.services.GameService;
 import net.kdt.pojavlaunch.utils.JREUtils;
 import net.kdt.pojavlaunch.utils.MCOptionUtils;
+import net.kdt.pojavlaunch.utils.TouchControllerUtils;
 import net.kdt.pojavlaunch.value.MinecraftAccount;
 import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles;
 import net.kdt.pojavlaunch.value.launcherprofiles.MinecraftProfile;
@@ -70,6 +71,9 @@ import org.lwjgl.glfw.CallbackBridge;
 
 import java.io.File;
 import java.io.IOException;
+
+import top.fifthlight.touchcontroller.proxy.client.LauncherProxyClient;
+import top.fifthlight.touchcontroller.proxy.client.android.TouchControllerLayout;
 
 public class MainActivity extends BaseActivity implements ControlButtonMenuListener, EditorExitable, ServiceConnection {
     public static volatile ClipboardManager GLOBAL_CLIPBOARD;
@@ -110,6 +114,12 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
         initLayout(R.layout.activity_basemain);
         CallbackBridge.addGrabListener(touchpad);
         CallbackBridge.addGrabListener(minecraftGLView);
+
+        TouchControllerLayout touchControllerLayout = findViewById(R.id.content_frame);
+        LauncherProxyClient client = TouchControllerUtils.getProxyClient(this);
+        if (client != null) {
+            touchControllerLayout.setClient(client);
+        }
 
         mGyroControl = new GyroControl(this);
 

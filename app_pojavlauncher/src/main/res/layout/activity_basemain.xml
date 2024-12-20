@@ -10,7 +10,7 @@
 	android:background="@drawable/no_focus_shown"
 	android:keepScreenOn="true">
 
-	<FrameLayout
+	<top.fifthlight.touchcontroller.proxy.client.android.TouchControllerLayout
 		android:id="@+id/content_frame"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
@@ -70,7 +70,7 @@
 			android:visibility="gone"
 			/>
 
-	</FrameLayout>
+	</top.fifthlight.touchcontroller.proxy.client.android.TouchControllerLayout>
 
 	<ListView
 		android:layout_width="200dp"
